@@ -9,6 +9,7 @@
 import XCTest
 import EssentialFeedFramework
 
+
 class EndToEndTests: XCTestCase {
 
     func test_endToEndTestServerGETFeedResult_matchesFixedTestAccountData() {
