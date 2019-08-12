@@ -68,7 +68,7 @@ class RemoteFeedLoaderTest: XCTestCase {
     
     func test_load_deliversItemOn200HTTPResponseWithJSONItems() {
         
-        let (sut, client) = makeSUT()
+        let (remoteFeedLoader, client) = makeSUT()
         
         let item1 = makeItem(id: UUID(),
                              imageURL: URL(string: "http://a-url.com")!)
@@ -80,7 +80,7 @@ class RemoteFeedLoaderTest: XCTestCase {
         
         let items = [item1.model, item2.model]
         
-        expect(sut, toCompleteWith: .success(items), when: {
+        expect(remoteFeedLoader, toCompleteWith: .success(items), when: {
             let json = makeItemsJSON([item1.json, item2.json])
             client.complete(withStatusCode: 200, data: json)
         })
@@ -109,12 +109,6 @@ class RemoteFeedLoaderTest: XCTestCase {
         trackForMemoryLeaks(instance: sut, file: file, line: line)
         trackForMemoryLeaks(instance: client, file: file, line: line)
         return (sut, client)
-    }
-    
-    private func trackForMemoryLeaks(instance: AnyObject, file: StaticString = #file, line: UInt = #line) {
-        addTeardownBlock { [weak instance] in
-            XCTAssertNil(instance, "Potential memory leak", file: file, line: line)
-        }
     }
     
     private func expect(_ sut: RemoteFeedLoader, toCompleteWith expectedResult: RemoteFeedLoader.Result, when action: (() -> Void), file: StaticString = #file, line: UInt = #line) {
